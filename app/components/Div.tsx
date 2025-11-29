@@ -11,6 +11,7 @@ const controller = new AbortController();
 export default function Div() {
     const [text, setText] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
+    
 
     useGSAP(() => {
         gsap.to('.box ', {
