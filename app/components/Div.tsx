@@ -3,12 +3,10 @@ import {OpenRouter} from "@openrouter/sdk";
 import {gsap} from "gsap";
 import {useGSAP} from "@gsap/react";
 import {TextPlugin} from "gsap/TextPlugin";
-import {SplitText} from "gsap/SplitText";
-import {Draggable} from "gsap/Draggable";
-import {InertiaPlugin} from "gsap/InertiaPlugin";
+
 import {useEffect, useRef, useState} from "react";
 
-gsap.registerPlugin(useGSAP, TextPlugin, SplitText, Draggable, InertiaPlugin);
+gsap.registerPlugin(useGSAP, TextPlugin);
 const controller = new AbortController();
 export default function Div() {
     const [text, setText] = useState("");
@@ -20,7 +18,7 @@ export default function Div() {
             height: '80%',
             width: '88%',
             gridTemplateRows: '20% 80%',
-            duration: 0.5,
+            duration: 0.8,
             delay: 0.5,
         })
 
@@ -29,13 +27,13 @@ export default function Div() {
 
             opacity: 1,
             y: -7,
-            duration: 0.5,
+            duration: 0.8,
             delay: 1.5,
         })
 
         gsap.to('.text', {
             text: "Better-AI",
-            duration: 1.5,
+            duration: 1.2,
 
             delay: 2.6,
 
@@ -44,7 +42,7 @@ export default function Div() {
         gsap.to('.input', {
             opacity: 1,
             width: "70%",
-            duration: 0.5,
+            duration: 0.8,
 
             delay: 4,
 
@@ -52,7 +50,9 @@ export default function Div() {
         })
         gsap.to('.button', {
             opacity: 1,
-            duration: 0.5,
+            width: "2rem",
+            height: "2rem",
+            duration: 0.6,
 
             delay: 4.2,
 
@@ -121,21 +121,21 @@ export default function Div() {
                     Back!</p>
 
                 <div
-                    className="box h-[0rem] w-[0rem] border border-gray-200 rounded-lg grid grid-rows-[20%,80%] grid-cols-1 justify-center  items-center p-5   font-code text-xl">
+                    className="box h-[0rem] w-[0rem] border border-zinc-400 rounded-lg grid grid-rows-[20%,80%] grid-cols-1 justify-center  items-center p-5   font-code text-xl">
                     <div
-                        className=" row-1 flex h-full flex-row justify-center gap-10 col-1  items-center  font-code text-xl">
+                        className=" h-full row-1 flex  flex-row justify-center gap-10 col-1  items-center   font-code text-xl">
                         <input
-                            className="input opacity-0 border-b-1 border-1 p-2 bg-background border-b-zinc-400 border-zinc-500 rounded-2xl drop-shadow-2xl drop-shadow-blue-200 w-0 outline-none "
+                            className="input opacity-0 border-b-1 border-1 p-2 text-sm font-medium font-tomorrow border-b-zinc-400 border-zinc-500 rounded-2xl  w-0 outline-none  "
                             ref={inputRef}/>
 
                         <button
-                            className=" opacity-0 w-8 h-8 flex justify-center items-center button border-2 border-accent text-accent  rounded-2xl"
+                            className=" opacity-0 w-18 h-18 flex justify-center items-center button border-2 border-accent text-accent  rounded-2xl  "
                             onClick={stop}>⊙
                         </button>
                     </div>
                     <div
-                        className=" h-full font-code text-md overflow-y-scroll row-2 col-1  p-6 ">
-                        <div className=" h-ful w-full ">{text}</div>
+                        className=" h-full  text-md overflow-y-scroll row-2 col-1  p-6 ">
+                        <div className=" h-ful w-full font-code">{text}</div>
 
                     </div>
                 </div>
