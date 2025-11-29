@@ -128,8 +128,9 @@ export default function Div() {
                             className="input opacity-0 border-b-1 border-1 p-2 bg-background border-b-zinc-400 border-zinc-500 rounded-2xl drop-shadow-2xl drop-shadow-blue-200 w-0 outline-none "
                             ref={inputRef}/>
 
-                        <button className=" opacity-0  button border-2 border-foreground p-2 rounded-2xl"
-                                onClick={stop}>stop
+                        <button
+                            className=" opacity-0 w-8 h-8 flex justify-center items-center button border-2 border-accent text-accent  rounded-2xl"
+                            onClick={stop}>⊙
                         </button>
                     </div>
                     <div
