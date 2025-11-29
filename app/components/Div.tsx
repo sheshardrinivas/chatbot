@@ -19,6 +19,7 @@ export default function Div() {
 
             height: '80%',
             width: '88%',
+            gridTemplateRows: '20% 80%',
             duration: 0.5,
             delay: 0.5,
         })
@@ -120,17 +121,24 @@ export default function Div() {
                     Back!</p>
 
                 <div
-                    className="box h-[0rem] w-[0rem] border border-gray-200 rounded-lg flex flex-col justify-center gap-10  items-center p-6  font-code text-xl">
-                    <input className="input opacity-0 border-2 p-2 border-foreground rounded-2xl w-0 "
-                           ref={inputRef}/>
+                    className="box h-[0rem] w-[0rem] border border-gray-200 rounded-lg grid grid-rows-[20%,80%] grid-cols-1 justify-center  items-center p-5   font-code text-xl">
+                    <div
+                        className=" row-1 flex h-full flex-row justify-center gap-10 col-1  items-center  font-code text-xl">
+                        <input
+                            className="input opacity-0 border-b-1 border-1 p-2 bg-background border-b-zinc-400 border-zinc-500 rounded-2xl drop-shadow-2xl drop-shadow-blue-200 w-0 outline-none "
+                            ref={inputRef}/>
 
-                    <button className=" opacity-0  button border-2 border-foreground p-2 rounded-2xl"
-                            onClick={stop}>stop
-                    </button>
-                    <div className="text-area font-code text-md overflow-scroll">
-                        {text}
+                        <button className=" opacity-0  button border-2 border-foreground p-2 rounded-2xl"
+                                onClick={stop}>stop
+                        </button>
+                    </div>
+                    <div
+                        className=" h-full font-code text-md overflow-y-scroll row-2 col-1  p-6 ">
+                        <div className=" h-ful w-full ">{text}</div>
+
                     </div>
                 </div>
+
             </div>
         </>
     )
