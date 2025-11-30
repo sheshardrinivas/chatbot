@@ -157,8 +157,9 @@ export default function Div() {
                             ⊙
                         </button>
                     </div>
-                    <div className=" h-full  text-md overflow-y-scroll row-2 col-1  p-6 ">
-                        {stream && (<LoaderFive text="Thinking..."/>)}
+                    <div
+                        className=" h-full  text-md overflow-y-scroll row-2 col-1  p-6 ">
+                        {stream && (<LoaderFive text="Generating chat..."/>)}
                         <div className=" h-ful w-full font-code">{text}</div>
                     </div>
                 </div>
