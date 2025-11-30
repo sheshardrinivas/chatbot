@@ -97,13 +97,12 @@ export default function Div() {
                     signal: controller.signal,
                 },
             );
-            if (stream_1) {
-                setStream(false)
-            }
-           
+
+
             for await (const chunk of stream_1) {
                 const content = chunk.choices?.[0]?.delta?.content;
                 if (content) {
+                    setStream(false)
                     setText((prev) => prev + content);
                 }
             }
@@ -159,7 +158,7 @@ export default function Div() {
                         </button>
                     </div>
                     <div className=" h-full  text-md overflow-y-scroll row-2 col-1  p-6 ">
-                        {stream && (<LoaderFive text="Generating chat..."/>)}
+                        {stream && (<LoaderFive text="Thinking..."/>)}
                         <div className=" h-ful w-full font-code">{text}</div>
                     </div>
                 </div>
