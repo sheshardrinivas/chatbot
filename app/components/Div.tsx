@@ -98,11 +98,16 @@ export default function Div() {
         setStream(true)
 
         try {
+
+
             const stream_1 = await openRouter.chat.send(
                 {
-                    model: "qwen/qwen3-coder:free",
-                    provider: "venice/beta",
-                    messages: [{role: "user", content: content}],
+                    model: "openai/gpt-oss-20b:free",
+
+                    messages: [{
+                        role: "user",
+                        content: content
+                    }],
                     stream: true,
                 },
                 {
