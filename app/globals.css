@@ -6,6 +6,7 @@
     --color-background2: var(--background2);
     --color-foreground: var(--foreground);
     --color-accent: var(--accent);
+    --color-accent1: var(--accent1);
     --font-sans: var(--font-geist-sans);
 
     --font-mono: var(--font-geist-mono);
@@ -19,6 +20,7 @@
         --background2: #4f4f51;
         --foreground: #E3E3E3;
         --accent: #F58F7C;
+        --accent1: #F2C4CE;
     }
 }
 

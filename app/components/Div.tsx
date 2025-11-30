@@ -14,6 +14,7 @@ export default function Div() {
     const inputRef = useRef<HTMLInputElement>(null);
     const [stream, setStream] = useState(false);
     const el = useRef<HTMLButtonElement>(null);
+    const el1 = useRef<HTMLButtonElement>(null);
 
     useGSAP(() => {
         gsap.to(".box ", {
@@ -48,7 +49,7 @@ export default function Div() {
             opacity: 1,
             width: "2rem",
             height: "2rem",
-            duration: 0.6,
+            duration: 0.5,
 
             delay: 4.2,
         });
@@ -56,17 +57,26 @@ export default function Div() {
         const hoverAnim = gsap.to(el.current, {
             width: "2.3rem",
             height: "2.3rem",
-            duration: 0.6,
+            duration: 0.4,
 
             ease: "power2.out",
             paused: true,
         });
+        const hoverAnim3 = gsap.to(el1.current, {
+            width: "2.3rem",
+            height: "2.3rem",
+            duration: 0.4,
 
+            ease: "power2.out",
+            paused: true,
+        });
         el.current?.addEventListener("mouseenter", () => hoverAnim.play());
         el.current?.addEventListener("mouseleave", () => hoverAnim.reverse());
+        el1.current?.addEventListener("mouseenter", () => hoverAnim3.play());
+        el1.current?.addEventListener("mouseleave", () => hoverAnim3.reverse());
         const hoverAnim2 = gsap.to(inputRef.current, {
             scale: 1.02,
-            duration: 0.6,
+            duration: 0.5,
 
             ease: "power2.out",
             paused: true,
@@ -81,6 +91,7 @@ export default function Div() {
         apiKey: process.env.NEXT_PUBLIC_OPENROUTER_KEY,
     });
 
+
     async function fetch_data() {
         setText("");
         const content = inputRef.current?.value || "";
@@ -89,7 +100,8 @@ export default function Div() {
         try {
             const stream_1 = await openRouter.chat.send(
                 {
-                    model: "x-ai/grok-4.1-fast:free",
+                    model: "qwen/qwen3-coder:free",
+                    provider: "venice/beta",
                     messages: [{role: "user", content: content}],
                     stream: true,
                 },
@@ -130,6 +142,7 @@ export default function Div() {
                 fetch_data();
             }
         });
+
     }, []);
 
     return (
@@ -148,14 +161,20 @@ export default function Div() {
                             className="input opacity-0 border-b-1 border-1 p-2 text-sm font-medium font-tomorrow border-b-zinc-400 border-zinc-500 rounded-2xl  w-0 outline-none  "
                             ref={inputRef}
                         />
+                        <button
+                            className="opacity-0 w-18 h-18 flex justify-center items-center button border-2 border-accent1  text-accent1  rounded-2xl"
+                            ref={el}
+                            onClick={fetch_data}
+                        >➤
+                        </button>
 
                         <button
                             className="opacity-0 w-18 h-18 flex justify-center items-center button border-2 border-accent  text-accent  rounded-2xl"
-                            ref={el}
+                            ref={el1}
                             onClick={stop}
-                        >
-                            ⊙
+                        >⊙
                         </button>
+
                     </div>
                     <div
                         className=" h-full  text-md overflow-y-scroll row-2 col-1  p-6 ">
