@@ -5,6 +5,7 @@ import {useGSAP} from "@gsap/react";
 import {TextPlugin} from "gsap/TextPlugin";
 
 import {useEffect, useRef, useState} from "react";
+import {LoaderFive} from "@/components/ui/loader";
 
 gsap.registerPlugin(useGSAP, TextPlugin);
 const controller = new AbortController();
@@ -83,9 +84,10 @@ export default function Div() {
     async function fetch_data() {
         setText("");
         const content = inputRef.current?.value || "";
+        setStream(true)
 
         try {
-            const stream = await openRouter.chat.send(
+            const stream_1 = await openRouter.chat.send(
                 {
                     model: "x-ai/grok-4.1-fast:free",
                     messages: [{role: "user", content: content}],
@@ -95,8 +97,11 @@ export default function Div() {
                     signal: controller.signal,
                 },
             );
-
-            for await (const chunk of stream) {
+            if (stream_1) {
+                setStream(false)
+            }
+           
+            for await (const chunk of stream_1) {
                 const content = chunk.choices?.[0]?.delta?.content;
                 if (content) {
                     setText((prev) => prev + content);
@@ -104,6 +109,7 @@ export default function Div() {
             }
         } catch (error: any) {
             if (error.name === "AbortError") {
+                setStream(false);
                 console.log("Stream cancelled");
             } else {
                 throw error;
@@ -153,6 +159,7 @@ export default function Div() {
                         </button>
                     </div>
                     <div className=" h-full  text-md overflow-y-scroll row-2 col-1  p-6 ">
+                        {stream && (<LoaderFive text="Generating chat..."/>)}
                         <div className=" h-ful w-full font-code">{text}</div>
                     </div>
                 </div>
