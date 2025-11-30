@@ -150,7 +150,7 @@ export default function Div() {
         if (abortControllerRef.current) {
             abortControllerRef.current.abort();
             setStream(false);
-            setText("<<Trerminated by user>>");
+            setText("<<answer generation stopped by user>>");
         }
     }
 
