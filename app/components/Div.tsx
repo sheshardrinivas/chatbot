@@ -15,6 +15,7 @@ export default function Div() {
     const [stream, setStream] = useState(false);
     const el = useRef<HTMLButtonElement>(null);
     const el1 = useRef<HTMLButtonElement>(null);
+    const el2 = useRef<HTMLButtonElement>(null);
 
     useGSAP(() => {
         gsap.to(".box ", {
@@ -70,10 +71,20 @@ export default function Div() {
             ease: "power2.out",
             paused: true,
         });
+        const hoverAnim4 = gsap.to(el2.current, {
+            width: "2.3rem",
+            height: "2.3rem",
+            duration: 0.4,
+
+            ease: "power2.out",
+            paused: true,
+        });
         el.current?.addEventListener("mouseenter", () => hoverAnim.play());
         el.current?.addEventListener("mouseleave", () => hoverAnim.reverse());
         el1.current?.addEventListener("mouseenter", () => hoverAnim3.play());
         el1.current?.addEventListener("mouseleave", () => hoverAnim3.reverse());
+        el2.current?.addEventListener("mouseenter", () => hoverAnim4.play());
+        el2.current?.addEventListener("mouseleave", () => hoverAnim4.reverse());
         const hoverAnim2 = gsap.to(inputRef.current, {
             scale: 1.02,
             duration: 0.5,
@@ -140,6 +151,10 @@ export default function Div() {
         setText("--- Stream Stopped ---");
     }
 
+    function clear() {
+        setText("");
+    }
+
     useEffect(() => {
         inputRef.current?.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
@@ -178,6 +193,12 @@ export default function Div() {
                             ref={el1}
                             onClick={stop}
                         >⊙
+                        </button>
+                        <button
+                            className="opacity-0 w-18 h-18 flex justify-center items-center button border-2 border-background2  text-background2  rounded-2xl"
+                            ref={el2}
+                            onClick={clear}
+                        >✕
                         </button>
 
                     </div>
