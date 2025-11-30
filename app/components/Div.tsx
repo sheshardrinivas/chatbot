@@ -1,8 +1,10 @@
 "use client";
-import {OpenRouter} from "@openrouter/sdk";
+
 import {gsap} from "gsap";
 import {useGSAP} from "@gsap/react";
 import {TextPlugin} from "gsap/TextPlugin";
+import {CohereClient} from "cohere-ai";
+
 
 import {useEffect, useRef, useState} from "react";
 import {LoaderFive} from "@/components/ui/loader";
@@ -16,6 +18,7 @@ export default function Div() {
     const el = useRef<HTMLButtonElement>(null);
     const el1 = useRef<HTMLButtonElement>(null);
     const el2 = useRef<HTMLButtonElement>(null);
+    const abortControllerRef = useRef<AbortController | null>(null);
 
     useGSAP(() => {
         gsap.to(".box ", {
@@ -98,57 +101,57 @@ export default function Div() {
             hoverAnim2.reverse(),
         );
     }, []);
-    const openRouter = new OpenRouter({
-        apiKey: process.env.NEXT_PUBLIC_OPENROUTER_KEY,
+    const cohere = new CohereClient({
+        token: process.env.NEXT_PUBLIC_TOKEN,
     });
-
 
     async function fetch_data() {
         setText("");
         const content = inputRef.current?.value || "";
         setStream(true)
 
+        const newController = new AbortController();
+        abortControllerRef.current = newController;
+        const signal = newController.signal;
+
         try {
 
-
-            const stream_1 = await openRouter.chat.send(
-                {
-                    model: "openai/gpt-oss-20b:free",
-
-                    messages: [{
-                        role: "user",
-                        content: content
-                    }],
-                    stream: true,
+            const stream = await cohere.chatStream({
+                    model: "command-a-03-2025",
+                    message: content,
                 },
-                {
-                    signal: controller.signal,
-                },
+                {abortSignal: signal,}
             );
 
 
-            for await (const chunk of stream_1) {
-                const content = chunk.choices?.[0]?.delta?.content;
-                if (content) {
+            // 3. Iterate over the stream
+            for await (const chat of stream) {
+                if (chat.eventType === "text-generation") {
                     setStream(false)
-                    setText((prev) => prev + content);
+                    setText((prev) => prev + chat.text);
                 }
             }
+            abortControllerRef.current = null;
+
+
         } catch (error: any) {
+            // 4. Handle the cancellation error
             if (error.name === "AbortError") {
-                setStream(false);
-                console.log("Stream cancelled");
+                console.log("\nStream cancelled successfully by AbortController.");
             } else {
-                throw error;
+                console.error("\nAn error occurred:", error);
             }
+            abortControllerRef.current = null;
         }
 
-        // To cancel the stream:
     }
 
     function stop() {
-        controller.abort();
-        setText("--- Stream Stopped ---");
+        if (abortControllerRef.current) {
+            abortControllerRef.current.abort();
+            setStream(false);
+            setText("<<Trerminated by user>>");
+        }
     }
 
     function clear() {
@@ -169,7 +172,7 @@ export default function Div() {
         <>
             <div className="h-screen w-screen flex flex-col justify-center items-center container">
                 <p className=" text font-tomorrow text-xl inline-block bg-gradient-to-tr from-zinc-300 to-zinc-500 bg-clip-text text-transparent opacity-0">
-                    {" "}
+
                     Welcome Back!
                 </p>
 
