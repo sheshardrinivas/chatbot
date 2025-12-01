@@ -4,7 +4,7 @@ import {gsap} from "gsap";
 import {useGSAP} from "@gsap/react";
 import {TextPlugin} from "gsap/TextPlugin";
 import {CohereClient} from "cohere-ai";
-
+import {supabase} from "@/utils/supabase";
 
 import {useEffect, useRef, useState} from "react";
 import {LoaderFive} from "@/components/ui/loader";
@@ -108,43 +108,59 @@ export default function Div() {
     async function fetch_data() {
         setText("");
         const content = inputRef.current?.value || "";
-        setStream(true)
+        setStream(true);
 
         const newController = new AbortController();
         abortControllerRef.current = newController;
         const signal = newController.signal;
 
         try {
+            const conversationId = "1234";
 
-            const stream = await cohere.chatStream({
+            await supabase.from("chat_history").insert([
+                {role: "USER", message: content}
+            ]);
+
+            const stream = await cohere.chatStream(
+                {
                     model: "command-a-03-2025",
                     message: content,
+                    conversationId,
+
+                    preamble:
+                        "You are a helpful AI modeled after J.A.R.V.I.S from Iron Man. " +
+                        "Use concise, formal responses. Say 'sir' often unless told not to. " +
+                        "Do not use markdown for math."
                 },
-                {abortSignal: signal,}
+                {abortSignal: signal}
             );
 
+            let fullResponse = "";
 
-            // 3. Iterate over the stream
             for await (const chat of stream) {
                 if (chat.eventType === "text-generation") {
-                    setStream(false)
-                    setText((prev) => prev + chat.text);
+                    setStream(false);
+                    setText(prev => prev + chat.text);
+                    fullResponse += chat.text;
                 }
             }
+
+            await supabase.from("chat_history").insert([
+                {role: "CHATBOT", message: fullResponse}
+            ]);
+
             abortControllerRef.current = null;
 
-
         } catch (error: any) {
-            // 4. Handle the cancellation error
             if (error.name === "AbortError") {
-                console.log("\nStream cancelled successfully by AbortController.");
+                console.log("Stream cancelled successfully.");
             } else {
-                console.error("\nAn error occurred:", error);
+                console.error("Error:", error);
             }
             abortControllerRef.current = null;
         }
-
     }
+
 
     function stop() {
         if (abortControllerRef.current) {
