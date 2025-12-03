@@ -122,17 +122,27 @@ export default function Div() {
         setText("");
         const content = inputRef.current?.value || "";
         setStream(true);
+        // check if row exists
+        const {data, error} = await supabase
+            .from("chat_main")
+            .select("chat_id")
+            .eq("chat_id", conversationId);
 
+
+        if (data!.length === 0) {
+
+            const {error: insertErr} = await supabase
+                .from("chat_main")
+                .insert([{chat_id: conversationId}]);
+
+        }
         const newController = new AbortController();
         abortControllerRef.current = newController;
         const signal = newController.signal;
+        const json_object = []
 
         try {
 
-
-            await supabase.from("chat_history").insert([
-                {role: "USER", message: content}
-            ]);
 
             const stream = await cohere.chatStream(
                 {
@@ -157,10 +167,15 @@ export default function Div() {
                     fullResponse += chat.text;
                 }
             }
+            json_object.push({role: "USER", message: content});
+            json_object.push({role: "CHATBOT", message: fullResponse});
 
-            await supabase.from("chat_history").insert([
-                {role: "CHATBOT", message: fullResponse}
-            ]);
+
+            const {error: updateError} = await supabase
+                .from("chat_main")
+                .update({content: json_object})
+                .eq("chat_id", conversationId);
+
 
             abortControllerRef.current = null;
 
@@ -189,7 +204,7 @@ export default function Div() {
 
     async function new_chat() {
         setText("");
-        conversationId = Math.random().toString()
+        conversationId = (Math.random() * 100).toString()
         await supabase.from("id_").insert([
             {chat_id: conversationId},
         ]);
