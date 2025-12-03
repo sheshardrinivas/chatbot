@@ -121,9 +121,15 @@ export default function Div() {
     });
 
     async function fetch_data() {
+
+
         setText("");
         const content = inputRef.current?.value || "";
         setStream(true);
+        if (inputRef.current) {
+            inputRef.current.value = "";
+        }
+
 
         const {data, error} = await supabase
             .from("chat_main")
@@ -169,10 +175,10 @@ export default function Div() {
                     fullResponse += chat.text;
                 }
             }
+
+
             json_object.push({role: "USER", message: content});
             json_object.push({role: "CHATBOT", message: fullResponse});
-
-
             const {error: updateError} = await supabase
                 .from("chat_main")
                 .update({content: json_object})
