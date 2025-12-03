@@ -124,7 +124,7 @@ export default function Div() {
         setText("");
         const content = inputRef.current?.value || "";
         setStream(true);
-        // check if row exists
+
         const {data, error} = await supabase
             .from("chat_main")
             .select("chat_id")
@@ -268,7 +268,7 @@ export default function Div() {
 
                     </div>
                     <div
-                        className=" h-full  text-md overflow-y-scroll row-1 col-1  p-6 ">
+                        className=" h-full  text-md overflow-y-scroll scroll-smooth  row-1 col-1  p-6 ">
                         {stream && (<LoaderFive text="Thinking..."/>)}
                         <div className=" h-ful w-full font-code">{text}</div>
                     </div>
