@@ -24,6 +24,7 @@ export default function Div() {
 
     useGSAP(() => {
         gsap.to(".box ", {
+            opacity: 1,
             height: "80%",
             width: "88%",
             gridTemplateRows: "20% 80%",
@@ -229,7 +230,7 @@ export default function Div() {
                 </p>
 
                 <div
-                    className="box h-[0rem] w-[0rem] border border-zinc-400 rounded-lg grid grid-rows-[20%,80%] grid-cols-1 justify-center  items-center p-5   font-code text-xl">
+                    className="box opacity-0 h-[0rem] w-[0rem] border border-zinc-400 rounded-lg grid grid-rows-[20%,80%] grid-cols-1 justify-center  items-center p-5   font-code text-xl">
                     <div
                         className=" h-full row-1 flex  flex-row justify-center gap-10 col-1  items-center   font-code text-xl">
                         <button
