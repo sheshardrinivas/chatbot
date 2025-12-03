@@ -9,10 +9,11 @@ import {supabase} from "@/utils/supabase";
 import {useEffect, useRef, useState} from "react";
 import {LoaderFive} from "@/components/ui/loader";
 
-let conversationId = "1234";
 gsap.registerPlugin(useGSAP, TextPlugin);
 const controller = new AbortController();
 export default function Div() {
+
+    let conversationId = "1234";
     const [text, setText] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
     const [stream, setStream] = useState(false);
@@ -27,7 +28,7 @@ export default function Div() {
             opacity: 1,
             height: "80%",
             width: "88%",
-            gridTemplateRows: "20% 80%",
+            gridTemplateRows: "90% 10%",
             duration: 0.8,
             delay: 0.5,
         });
@@ -62,16 +63,16 @@ export default function Div() {
         });
 
         const hoverAnim = gsap.to(el.current, {
-            width: "2.3rem",
-            height: "2.3rem",
+            width: "2.35rem",
+            height: "2.35rem",
             duration: 0.4,
 
             ease: "power2.out",
             paused: true,
         });
         const hoverAnim5 = gsap.to(el3.current, {
-            width: "2.3rem",
-            height: "2.3rem",
+            width: "2.35rem",
+            height: "2.35rem",
             duration: 0.4,
 
             ease: "power2.out",
@@ -79,16 +80,16 @@ export default function Div() {
         });
 
         const hoverAnim3 = gsap.to(el1.current, {
-            width: "2.3rem",
-            height: "2.3rem",
+            width: "2.35rem",
+            height: "2.35rem",
             duration: 0.4,
 
             ease: "power2.out",
             paused: true,
         });
         const hoverAnim4 = gsap.to(el2.current, {
-            width: "2.3rem",
-            height: "2.3rem",
+            width: "2.35rem",
+            height: "2.35rem",
             duration: 0.4,
 
             ease: "power2.out",
@@ -204,7 +205,9 @@ export default function Div() {
     }
 
     async function new_chat() {
-        setText("");
+        setText("new chat started");
+        setTimeout(clear, 50000);
+        setText(conversationId)
         conversationId = (Math.random() * 100).toString()
         await supabase.from("id_").insert([
             {chat_id: conversationId},
@@ -230,9 +233,9 @@ export default function Div() {
                 </p>
 
                 <div
-                    className="box opacity-0 h-[0rem] w-[0rem] border border-zinc-400 rounded-lg grid grid-rows-[20%,80%] grid-cols-1 justify-center  items-center p-5   font-code text-xl">
+                    className="box opacity-0 h-[0rem] w-[0rem] border border-zinc-400 rounded-lg grid grid-rows-[90%,10%] grid-cols-1 justify-center  items-center p-5   font-code text-xl">
                     <div
-                        className=" h-full row-1 flex  flex-row justify-center gap-10 col-1  items-center   font-code text-xl">
+                        className=" h-full row-2 flex  flex-row justify-center gap-10 col-1  items-center   font-code text-xl">
                         <button
                             className="opacity-0 w-18 h-18 flex justify-center items-center button border-2 border-accent1  text-accent1  rounded-2xl"
                             ref={el3}
@@ -265,7 +268,7 @@ export default function Div() {
 
                     </div>
                     <div
-                        className=" h-full  text-md overflow-y-scroll row-2 col-1  p-6 ">
+                        className=" h-full  text-md overflow-y-scroll row-1 col-1  p-6 ">
                         {stream && (<LoaderFive text="Thinking..."/>)}
                         <div className=" h-ful w-full font-code">{text}</div>
                     </div>
