@@ -9,6 +9,7 @@ import {supabase} from "@/utils/supabase";
 import {useEffect, useRef, useState} from "react";
 import {LoaderFive} from "@/components/ui/loader";
 
+let conversationId = "1234";
 gsap.registerPlugin(useGSAP, TextPlugin);
 const controller = new AbortController();
 export default function Div() {
@@ -18,6 +19,7 @@ export default function Div() {
     const el = useRef<HTMLButtonElement>(null);
     const el1 = useRef<HTMLButtonElement>(null);
     const el2 = useRef<HTMLButtonElement>(null);
+    const el3 = useRef<HTMLButtonElement>(null);
     const abortControllerRef = useRef<AbortController | null>(null);
 
     useGSAP(() => {
@@ -66,6 +68,15 @@ export default function Div() {
             ease: "power2.out",
             paused: true,
         });
+        const hoverAnim5 = gsap.to(el3.current, {
+            width: "2.3rem",
+            height: "2.3rem",
+            duration: 0.4,
+
+            ease: "power2.out",
+            paused: true,
+        });
+
         const hoverAnim3 = gsap.to(el1.current, {
             width: "2.3rem",
             height: "2.3rem",
@@ -88,6 +99,8 @@ export default function Div() {
         el1.current?.addEventListener("mouseleave", () => hoverAnim3.reverse());
         el2.current?.addEventListener("mouseenter", () => hoverAnim4.play());
         el2.current?.addEventListener("mouseleave", () => hoverAnim4.reverse());
+        el3.current?.addEventListener("mouseenter", () => hoverAnim5.play());
+        el3.current?.addEventListener("mouseleave", () => hoverAnim5.reverse());
         const hoverAnim2 = gsap.to(inputRef.current, {
             scale: 1.02,
             duration: 0.5,
@@ -115,7 +128,7 @@ export default function Div() {
         const signal = newController.signal;
 
         try {
-            const conversationId = "1234";
+
 
             await supabase.from("chat_history").insert([
                 {role: "USER", message: content}
@@ -130,7 +143,7 @@ export default function Div() {
                     preamble:
                         "You are a helpful AI modeled after J.A.R.V.I.S from Iron Man. " +
                         "Use concise, formal responses. Say 'sir' often unless told not to. " +
-                        "Do not use markdown for math."
+                        "Do not use markdown for math." + "your are J.A.R.V.I.S in this app" + "your creator is sheshadrinivas and his team",
                 },
                 {abortSignal: signal}
             );
@@ -174,6 +187,14 @@ export default function Div() {
         setText("");
     }
 
+    async function new_chat() {
+        setText("");
+        conversationId = Math.random().toString()
+        await supabase.from("id_").insert([
+            {chat_id: conversationId},
+        ]);
+    }
+
     useEffect(() => {
         inputRef.current?.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
@@ -196,6 +217,12 @@ export default function Div() {
                     className="box h-[0rem] w-[0rem] border border-zinc-400 rounded-lg grid grid-rows-[20%,80%] grid-cols-1 justify-center  items-center p-5   font-code text-xl">
                     <div
                         className=" h-full row-1 flex  flex-row justify-center gap-10 col-1  items-center   font-code text-xl">
+                        <button
+                            className="opacity-0 w-18 h-18 flex justify-center items-center button border-2 border-accent1  text-accent1  rounded-2xl"
+                            ref={el3}
+                            onClick={new_chat}
+                        >✺
+                        </button>
                         <input
                             className="input opacity-0 border-b-1 border-1 p-2 text-sm font-medium font-tomorrow border-b-zinc-400 border-zinc-500 rounded-2xl  w-0 outline-none  "
                             ref={inputRef}
