@@ -13,7 +13,7 @@ gsap.registerPlugin(useGSAP, TextPlugin);
 const controller = new AbortController();
 export default function Div() {
 
-    let conversationId = "1234";
+    let conversationId = (Math.random() * 100).toString();
     const [text, setText] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
     const [stream, setStream] = useState(false);
