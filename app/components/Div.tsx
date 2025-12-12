@@ -22,6 +22,7 @@ export default function Div() {
     const el2 = useRef<HTMLButtonElement>(null);
     const el3 = useRef<HTMLButtonElement>(null);
     const abortControllerRef = useRef<AbortController | null>(null);
+    const offset = 9;
 
     useGSAP(() => {
         gsap.to(".box ", {
@@ -30,28 +31,28 @@ export default function Div() {
             width: "88%",
             gridTemplateRows: "90% 10%",
             duration: 0.8,
-            delay: 0.5,
+            delay: 0.5 + offset,
         });
 
         gsap.to(".text", {
             opacity: 1,
             y: -7,
             duration: 0.8,
-            delay: 1.5,
+            delay: 1.5 + offset,
         });
 
         gsap.to(".text", {
             text: "Better-AI",
             duration: 1.2,
 
-            delay: 2.6,
+            delay: 2.6 + offset,
         });
         gsap.to(".input", {
             opacity: 1,
             width: "70%",
             duration: 0.8,
 
-            delay: 4,
+            delay: 4 + offset,
         });
         gsap.to(".button", {
             opacity: 1,
@@ -59,7 +60,7 @@ export default function Div() {
             height: "2rem",
             duration: 0.5,
 
-            delay: 4.2,
+            delay: 4.2 + offset,
         });
 
         const hoverAnim = gsap.to(el.current, {
