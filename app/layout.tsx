@@ -22,7 +22,7 @@ const tomorrow = Tomorrow({
 });
 
 export const metadata: Metadata = {
-    title: "Better AI",
+    title: "Learnie Genie",
     description: "chat bot which is better than others as alexa features and is good for education",
 };
 

@@ -8,6 +8,8 @@ import {supabase} from "@/utils/supabase";
 
 import {useEffect, useRef, useState} from "react";
 import {LoaderFive} from "@/components/ui/loader";
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 gsap.registerPlugin(useGSAP, TextPlugin);
 const controller = new AbortController();
@@ -22,7 +24,7 @@ export default function Div() {
     const el2 = useRef<HTMLButtonElement>(null);
     const el3 = useRef<HTMLButtonElement>(null);
     const abortControllerRef = useRef<AbortController | null>(null);
-    const offset = 9;
+    const offset = 1;
 
     useGSAP(() => {
         gsap.to(".box ", {
@@ -42,7 +44,7 @@ export default function Div() {
         });
 
         gsap.to(".text", {
-            text: "Better-AI",
+            text: "Learnie Genie",
             duration: 1.2,
 
             delay: 2.6 + offset,
@@ -161,7 +163,7 @@ export default function Div() {
 
                     preamble:
                         "You are a helpful AI modeled after J.A.R.V.I.S from Iron Man. " +
-                        "Use concise, formal responses. Say 'sir' often unless told not to. " +
+                        "Use concise, formal responses." +
                         "Do not use markdown for math." + "your are J.A.R.V.I.S in this app" + "your creator is sheshadrinivas and his team",
                 },
                 {abortSignal: signal}
@@ -233,8 +235,8 @@ export default function Div() {
 
     return (
         <>
-            <div className="h-screen w-screen flex flex-col justify-center items-center container">
-                <p className=" text font-tomorrow text-xl inline-block bg-gradient-to-tr from-zinc-300 to-zinc-500 bg-clip-text text-transparent opacity-0">
+            <div className="h-screen w-screen gap-y-5 flex flex-col justify-center items-center container">
+                <p className=" text font-tomorrow text-6xl inline-block bg-gradient-to-tr from-zinc-300 to-zinc-500 bg-clip-text text-transparent opacity-0">
 
                     Welcome Back!
                 </p>
@@ -277,7 +279,8 @@ export default function Div() {
                     <div
                         className=" h-full  text-md overflow-y-scroll scroll-smooth  row-1 col-1  p-6 ">
                         {stream && (<LoaderFive text="Thinking..."/>)}
-                        <div className=" h-ful w-full font-code">{text}</div>
+                        {/*<div className=" h-ful w-full font-code">{text}</div>*/}
+                        <Markdown remarkPlugins={[remarkGfm]}>{text}</Markdown>
                     </div>
                 </div>
             </div>
