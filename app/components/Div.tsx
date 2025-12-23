@@ -38,7 +38,7 @@ export default function Div() {
     gsap.to(".text", {
       opacity: 1,
       y: -7,
-      duration: 0.8,
+      duration: 0.75,
       delay: 1.5 + offset,
     });
 
