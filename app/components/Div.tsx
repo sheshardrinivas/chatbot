@@ -14,7 +14,7 @@ import remarkGfm from "remark-gfm";
 gsap.registerPlugin(useGSAP, TextPlugin);
 const controller = new AbortController();
 export default function Div() {
-  let conversationId = (Math.random() * 100).toString();
+  let conversationId = (Math.random() * 1000000).toString();
   const [text, setText] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const [stream, setStream] = useState(false);
@@ -44,6 +44,7 @@ export default function Div() {
 
     gsap.to(".text", {
       text: "Learnie Genie",
+      scale: 0.8,
       duration: 1.2,
 
       delay: 2.6 + offset,
@@ -121,6 +122,13 @@ export default function Div() {
   const cohere = new CohereClient({
     token: process.env.NEXT_PUBLIC_TOKEN,
   });
+  async function get_sved_data() {
+    const { data, error } = await supabase
+      .from("chat_main")
+      .select("content")
+      .eq("chat_id", conversationId);
+    return data?.[0]?.content;
+  }
 
   async function fetch_data() {
     setText("");
@@ -171,9 +179,12 @@ export default function Div() {
           fullResponse += chat.text;
         }
       }
+      const saved_data = await get_sved_data();
+      json_object.push(saved_data);
 
       json_object.push({ role: "USER", message: content });
       json_object.push({ role: "CHATBOT", message: fullResponse });
+
       const { error: updateError } = await supabase
         .from("chat_main")
         .update({ content: json_object })
